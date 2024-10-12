@@ -72,27 +72,43 @@ ostream& operator << (ostream &out, const pair<A, B>& pp) { out << "(" << pp.F <
 
 // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
-using T = int;
-using P = pair<T, T>;
 
-P operator +(P a, P b)
+using T = ll;
+struct P
 {
-	return {a.first + b.first, a.second + b.second};
-}
+	T x, y;
+};
 
-P operator *(P a, T b)
-{
-	return {a.first * b, a.second * b};
-}
+using Pc = const P&;
 
-P operator -(P a, P b)
-{
-	return a+(b*-1);
-}
+P operator +(Pc a, Pc b) { return {a.x + b.x, a.y + b.y}; }
 
+P operator *(Pc a, T b) { return {a.x * b, a.y * b}; }
+
+P operator -(Pc a, Pc b) { return a+(b*-1); }
+
+T cross(Pc a, Pc b) { return a.x * b.y - a.y * b.x; }
+
+T dot(Pc a, Pc b) { return a.x * b.x + a.y * b.y; }
+
+ostream &operator << (ostream& out, P a) { out << "("<<a.x<<", "<<a.y<<")"; return out;}
 
 signed main()
 {
 	init();
-	
+	int n; cin >> n;
+	while(n--)
+	{
+		P a, b, c;
+		cin >> a.x >> a.y >> b.x >> b.y >> c.x >> c.y;
+		b = b - a;
+		c = c - a;
+		ll r = cross(b, c);
+		if(r > 0)
+			cout<<"LEFT\n";
+		else if(r < 0)
+			cout <<"RIGHT\n";
+		else cout <<"TOUCH\n";
+	}
+
 }
